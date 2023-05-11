@@ -3,11 +3,17 @@ from tkinter import colorchooser
 
 class MatrixUI:
     def __init__(self, master, rows=15, cols=12):
+        # root/parent instance of tkinter,
+        # responsible for drawing objects and controlling the session
         self.master = master
+
         self.rows = rows
         self.cols = cols
+        
         self.buttons = []
 
+        # Populate with buttons
+        # "empty" buttons are filled with #000000
         for i in range(self.rows):
             row = []
             for j in range(self.cols):
@@ -15,8 +21,9 @@ class MatrixUI:
                 button.grid(row=i, column=j)
                 row.append(button)
             self.buttons.append(row)
-            saveButton = tk.Button(self.master, command=self.saveButtonPress, text="save")
-            saveButton.grid(row=self.rows, column=self.cols-1)
+
+        saveButton = tk.Button(self.master, command=self.saveButtonPress, text="save")
+        saveButton.grid(row=self.rows, column=self.cols-1)
 
     def onButtonClick(self, i, j):
         _, color = colorchooser.askcolor()
