@@ -1,12 +1,17 @@
 #include <FastLED.h>
 
+char face1[] = ""
 
+// Matrix led settings
 #define LED_PIN 9
 #define LED_TYPE WS2812B
 #define COLOR_ORDER RGB
 #define NUM_LEDS 180
 #define BRIGHTNESS 96
 #define FRAMES_PER_SECOND 120
+CRGB leds[NUM_LEDS];
+
+// Buttons
 int button1 = 2;
 int button2 = 3;
 int button3 = 4;
@@ -15,27 +20,32 @@ int statusB1 = false;
 int statusB2 = false;
 int statusB3 = false;
 int statusB4 = false;
-CRGB leds[NUM_LEDS];
 
+// debug indicator
 int rgbTest = false;
 
 
+
 void setup() {
+  // serial screen setup for debug
   Serial.begin(9600);
-  // put your setup code here, to run once:
+  
+  // LED matrix setup
   FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
   FastLED.setBrightness(BRIGHTNESS);
 
+  // Buttons setup
   pinMode(button1, INPUT);
   pinMode(button2, INPUT);
   pinMode(button3, INPUT);
   pinMode(button4, INPUT);
-  draw();
+
   Serial.print("setup done");
 }
 
+
+// ------- MAIN LOOP -------
 void loop() {
-  // put your main code here, to run repeatedly:  
   if (digitalRead(button1) == HIGH) {
     Serial.print("button pressed");
     statusB1 = !statusB1;
@@ -91,28 +101,37 @@ void loop() {
     }
   }
 }
-//  UNUSED CODE
-//void rgbOption1(int on) {
-//  Serial.print("Made it into option1");
-//  if (on) {
-//    leds[0] = CRGB::Red;    
-//  }
-//  else {
-//    leds[0] = 0;
-//  }
-//  FastLED.show();
-//}
-//
-//void rgbOption2(int on) {
-//  Serial.print("Made it into option2");
-//  if (on) {
-//    leds[1] = CRGB::Blue;    
-//  }
-//  else {
-//    leds[1] = 0;
-//  }
-//  FastLED.show();
-//}
+
+char[][] split(char[] input) {
+  char retString[900][3];
+  int j = 0;
+  int ctr = 0;
+  for(i=0; i<=(strlen(input)); i++) {
+    // if space or NULL found, assign NULL into retString[ctr]
+    if (input[i] == ' ' || input[i] == '\0') {
+      retString[ctr][j]='\0';
+      ctr++;  //for next word
+      j=0;    //for next word, init index to 0
+    }
+    else {
+      retString[ctr][j]=input[i];
+      j++;
+    }
+  }
+  retString[ctr] = {'E', 'D', '\0'};
+  return retString;
+}
+
+void face1() {
+  char faceData[900][3] = split(face1);
+  int i = 0;
+  int lineCt = 0;
+  while (faceData[i] != {'E', 'D', '\0'}) {
+    if (lineCt == 0) {
+      //pass and TODO here
+    }
+  }
+}
 
 void faceSmile() {
   Serial.print("Face toggled");
@@ -161,6 +180,7 @@ void faceExcited() {
 
 
 void draw() {
+  // whipe board
   FastLED.clear();
   FastLED.show();
 
